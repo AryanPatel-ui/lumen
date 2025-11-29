@@ -19,6 +19,19 @@ export default function Navigation() {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const [userName, setUserName] = useState("User")
+
+  useEffect(() => {
+    const userData = localStorage.getItem("currentUser")
+    if (userData) {
+      try {
+        const parsed = JSON.parse(userData)
+        setUserName(parsed.name || "User")
+      } catch (e) {
+        console.error("Failed to parse user data:", e)
+      }
+    }
+  }, [])
   
   const toggleCollapse = () => {
     const newState = !isCollapsed
