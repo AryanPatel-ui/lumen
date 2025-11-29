@@ -117,7 +117,11 @@ export default function DashboardPage() {
 
   const blocksByDay: Record<string, TimeBlock[]> = {}
   timeBlocks.forEach((block) => {
-    const key = dayKey(new Date(block.date))
+    // Handle both YYYY-MM-DD and ISO date formats
+    const blockDate = block.date.length === 10 
+      ? new Date(block.date + 'T12:00:00')
+      : new Date(block.date)
+    const key = dayKey(blockDate)
     if (!blocksByDay[key]) blocksByDay[key] = []
     blocksByDay[key].push(block)
   })
