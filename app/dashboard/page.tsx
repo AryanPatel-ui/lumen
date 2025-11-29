@@ -36,6 +36,7 @@ export default function DashboardPage() {
   const [draftRange, setDraftRange] = useState<DraftRange | null>(null)
   const [showCelebration, setShowCelebration] = useState(false)
   const [statsKey, setStatsKey] = useState(0)
+  const [clockFormat, setClockFormat] = useState<"12h" | "24h">("24h")
 
   // Load time blocks from localStorage
   useEffect(() => {
