@@ -89,7 +89,7 @@ export default function Navigation() {
           className="hidden lg:flex items-center gap-2 p-6 border-b border-primary/20 relative"
         >
           {!isCollapsed ? (
-            <Link href="/dashboard/profile" className="flex items-center gap-3 flex-1">
+            <Link href="/dashboard" className="flex items-center gap-3 flex-1">
               <motion.div 
                 whileHover={{ scale: 1.1 }}
                 transition={{ duration: 0.3 }}
@@ -99,11 +99,11 @@ export default function Navigation() {
               </motion.div>
               <div className="cursor-pointer overflow-hidden">
                 <h1 className="font-bold text-base truncate">{userName}</h1>
-                <p className="text-xs text-primary-foreground/60">View Profile</p>
+                <p className="text-xs text-primary-foreground/60">Go to Calendar</p>
               </div>
             </Link>
           ) : (
-            <Link href="/dashboard/profile" className="mx-auto">
+            <Link href="/dashboard" className="mx-auto">
               <motion.div 
                 whileHover={{ scale: 1.1 }}
                 transition={{ duration: 0.3 }}
