@@ -5,7 +5,6 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Calendar, CheckSquare, Mail, User, Sparkles, Menu, X, ChevronLeft, ChevronRight, Flame } from "lucide-react"
-import ThemeToggle from "@/components/theme/theme-toggle"
 
 const navItems = [
   { href: "/dashboard", label: "Calendar", icon: Calendar },
