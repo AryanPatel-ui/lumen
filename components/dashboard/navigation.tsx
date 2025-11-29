@@ -20,11 +20,6 @@ export default function Navigation() {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isCollapsed, setIsCollapsed] = useState(false)
-
-  const handleLogout = () => {
-    localStorage.removeItem("currentUser")
-    window.location.href = "/"
-  }
   
   const toggleCollapse = () => {
     const newState = !isCollapsed
