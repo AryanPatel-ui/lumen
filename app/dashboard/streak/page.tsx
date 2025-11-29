@@ -239,23 +239,53 @@ export default function StreakPage() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <div className="flex items-center gap-3 mb-2">
-          <motion.div
-            animate={{ 
-              scale: [1, 1.2, 1],
-              rotate: [0, 5, -5, 0]
-            }}
-            transition={{ 
-              duration: 2,
-              repeat: Infinity,
-              repeatDelay: 3
-            }}
-          >
-            <Flame className="w-8 h-8 text-orange-500" />
-          </motion.div>
-          <h1 className="text-3xl font-bold text-foreground">Streak Tracker</h1>
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-2">
+          <div className="flex items-center gap-3">
+            <motion.div
+              animate={{ 
+                scale: [1, 1.2, 1],
+                rotate: [0, 5, -5, 0]
+              }}
+              transition={{ 
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 3
+              }}
+            >
+              <Flame className="w-8 h-8 text-orange-500" />
+            </motion.div>
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">Streak Tracker</h1>
+              <p className="text-muted-foreground">Build habits one day at a time</p>
+            </div>
+          </div>
+          
+          {/* View Toggle */}
+          <div className="flex gap-2 bg-muted p-1 rounded-lg">
+            <button
+              onClick={() => setStreakView("overall")}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                streakView === "overall"
+                  ? "bg-primary text-primary-foreground shadow-md"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              data-testid="overall-view-btn"
+            >
+              Overall Progress
+            </button>
+            <button
+              onClick={() => setStreakView("activity")}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                streakView === "activity"
+                  ? "bg-primary text-primary-foreground shadow-md"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              data-testid="activity-view-btn"
+            >
+              By Activity
+            </button>
+          </div>
         </div>
-        <p className="text-muted-foreground">Build habits one day at a time</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
