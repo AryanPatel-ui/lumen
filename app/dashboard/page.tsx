@@ -142,14 +142,14 @@ export default function DashboardPage() {
   // called when drag on timeline finishes
   const handleTimelineRangeSelect = (startHour: number, endHour: number) => {
     const pad = (n: number) => n.toString().padStart(2, "0")
-    const dateOnly = new Date(
-      activeDate.getFullYear(),
-      activeDate.getMonth(),
-      activeDate.getDate(),
-    )
+    // Format as YYYY-MM-DD to avoid timezone issues
+    const year = activeDate.getFullYear()
+    const month = String(activeDate.getMonth() + 1).padStart(2, '0')
+    const day = String(activeDate.getDate()).padStart(2, '0')
+    const dateString = `${year}-${month}-${day}`
 
     setDraftRange({
-      date: dateOnly.toISOString(),
+      date: dateString,
       startTime: `${pad(startHour)}:00`,
       endTime: `${pad(endHour)}:00`,
     })
