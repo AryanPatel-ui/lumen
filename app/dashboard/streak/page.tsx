@@ -23,6 +23,7 @@ type StreakData = {
 }
 
 type HistoryView = "week" | "month" | "year"
+type StreakView = "overall" | "activity"
 
 export default function StreakPage() {
   const [streakData, setStreakData] = useState<StreakData>({
@@ -34,6 +35,7 @@ export default function StreakPage() {
   const [newActivityDuration, setNewActivityDuration] = useState("30")
   const [newActivityUnit, setNewActivityUnit] = useState("minutes")
   const [historyView, setHistoryView] = useState<HistoryView>("week")
+  const [streakView, setStreakView] = useState<StreakView>("overall")
 
   // Load streak data from localStorage
   useEffect(() => {
