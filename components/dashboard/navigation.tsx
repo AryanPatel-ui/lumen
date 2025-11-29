@@ -82,34 +82,34 @@ export default function Navigation() {
           isMobileMenuOpen ? "block" : "hidden"
         } lg:block fixed top-16 lg:top-0 left-0 bottom-0 bg-primary text-primary-foreground transition-all duration-200 z-40 overflow-y-auto h-screen`}
       >
-        {/* Logo */}
+        {/* User Profile Header */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="hidden lg:flex items-center gap-2 p-6 border-b border-primary/20 relative"
         >
           {!isCollapsed ? (
-            <Link href="/dashboard" className="flex items-center gap-2">
+            <Link href="/dashboard/profile" className="flex items-center gap-3 flex-1">
               <motion.div 
-                whileHover={{ rotate: 360, scale: 1.1 }}
-                transition={{ duration: 0.5 }}
-                className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center font-bold text-lg flex-shrink-0 cursor-pointer"
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3 }}
+                className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center cursor-pointer flex-shrink-0"
               >
-                SC
+                <User size={24} />
               </motion.div>
-              <div className="cursor-pointer">
-                <h1 className="font-bold text-lg">Luman</h1>
-                <p className="text-xs text-primary-foreground/60">Your Productivity Partner</p>
+              <div className="cursor-pointer overflow-hidden">
+                <h1 className="font-bold text-base truncate">{userName}</h1>
+                <p className="text-xs text-primary-foreground/60">View Profile</p>
               </div>
             </Link>
           ) : (
-            <Link href="/dashboard">
+            <Link href="/dashboard/profile" className="mx-auto">
               <motion.div 
-                whileHover={{ rotate: 360, scale: 1.1 }}
-                transition={{ duration: 0.5 }}
-                className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center font-bold text-lg mx-auto cursor-pointer"
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3 }}
+                className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center cursor-pointer"
               >
-                SC
+                <User size={20} />
               </motion.div>
             </Link>
           )}
