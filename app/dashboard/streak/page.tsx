@@ -113,7 +113,6 @@ export default function StreakPage() {
         ...prev,
         logs: [...prev.logs, { date: todayString, completedActivities: [activityId] }]
       }))
-      toast.success("✅ Great job! Keep the streak going!")
     } else {
       // Update existing log
       const isCompleted = todayLog.completedActivities.includes(activityId)
@@ -130,12 +129,6 @@ export default function StreakPage() {
             : log
         )
       }))
-      
-      if (isCompleted) {
-        toast("Activity unchecked", { icon: "↩️" })
-      } else {
-        toast.success("✅ Awesome! Activity completed!")
-      }
     }
   }
 
