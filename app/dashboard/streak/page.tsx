@@ -237,7 +237,7 @@ export default function StreakPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-gradient-to-br from-orange-500 to-red-500 rounded-xl shadow-lg p-6 text-white"
+            className="bg-gradient-to-br from-orange-500 to-red-500 dark:from-orange-600 dark:to-red-600 rounded-xl shadow-lg p-6 text-white"
           >
             <div className="flex items-center justify-between mb-4">
               <Flame className="w-8 h-8" />
