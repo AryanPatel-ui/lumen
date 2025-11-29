@@ -115,16 +115,6 @@ export default function Navigation() {
           </motion.button>
         </motion.div>
 
-        {/* Theme Toggle for Desktop */}
-        {!isCollapsed && (
-          <div className="hidden lg:block px-6 py-4 border-b border-primary/20">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Theme</span>
-              <ThemeToggle />
-            </div>
-          </div>
-        )}
-
         {/* Navigation Links */}
         <nav className="flex-1 overflow-y-auto">
           <ul className="space-y-1 p-4">
