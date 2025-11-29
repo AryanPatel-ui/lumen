@@ -40,16 +40,16 @@ export default function Navigation() {
         animate={{ y: 0, opacity: 1 }}
         className="lg:hidden bg-primary text-primary-foreground p-4 flex items-center justify-between"
       >
-        <div className="flex items-center gap-2">
+        <Link href="/dashboard" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
           <motion.div 
             whileHover={{ rotate: 360 }}
             transition={{ duration: 0.5 }}
-            className="w-8 h-8 bg-secondary rounded-md flex items-center justify-center text-sm font-bold"
+            className="w-8 h-8 bg-secondary rounded-md flex items-center justify-center text-sm font-bold cursor-pointer"
           >
             SC
           </motion.div>
-          <span className="font-bold">Luman</span>
-        </div>
+          <span className="font-bold cursor-pointer">Luman</span>
+        </Link>
         <div className="flex items-center gap-3">
           <ThemeToggle />
           <motion.button 
