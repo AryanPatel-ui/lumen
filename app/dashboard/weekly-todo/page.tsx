@@ -48,7 +48,6 @@ export default function WeeklyTodoPage() {
 
   const handleAddTodo = () => {
     if (!newTitle.trim()) {
-      toast.error("Please enter a task title")
       return
     }
     const todo: Todo = {
@@ -62,7 +61,6 @@ export default function WeeklyTodoPage() {
     setTodos([...todos, todo])
     setNewTitle("")
     setNewDescription("")
-    toast.success("✅ Task added!")
   }
 
   const handleToggleTodo = (id: string) => {
