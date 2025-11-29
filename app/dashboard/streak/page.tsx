@@ -41,13 +41,20 @@ export default function StreakPage() {
   useEffect(() => {
     const stored = localStorage.getItem("streakData")
     if (stored) {
-      setStreakData(JSON.parse(stored))
+      try {
+        const parsed = JSON.parse(stored)
+        setStreakData(parsed)
+      } catch (e) {
+        console.error("Failed to parse streak data:", e)
+      }
     }
   }, [])
 
-  // Save streak data to localStorage
+  // Save streak data to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem("streakData", JSON.stringify(streakData))
+    if (streakData.activities.length > 0 || streakData.logs.length > 0) {
+      localStorage.setItem("streakData", JSON.stringify(streakData))
+    }
   }, [streakData])
 
   const getTodayString = () => {
