@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Save, Settings as SettingsIcon, Bell, Clock, Palette, Shield } from "lucide-react"
+import { Save, Settings as SettingsIcon, Bell, Clock, Shield } from "lucide-react"
 import { motion } from "framer-motion"
 import toast from "react-hot-toast"
 
@@ -13,6 +13,7 @@ interface Settings {
   defaultBlockDuration: string
   autoBreaks: boolean
   breakDuration: string
+  clockFormat: "12h" | "24h"
 }
 
 export default function SettingsPage() {
@@ -24,6 +25,7 @@ export default function SettingsPage() {
     defaultBlockDuration: "90",
     autoBreaks: true,
     breakDuration: "15",
+    clockFormat: "24h",
   })
   const [isSaved, setIsSaved] = useState(false)
 
@@ -102,21 +104,13 @@ export default function SettingsPage() {
           max: 60,
           step: 5,
           conditional: "autoBreaks"
-        }
-      ]
-    },
-    {
-      title: "Appearance",
-      icon: Palette,
-      color: "text-pink-600",
-      bg: "bg-pink-50",
-      settings: [
+        },
         {
-          key: "theme" as keyof Settings,
-          label: "Theme",
-          description: "Choose your preferred color theme",
+          key: "clockFormat" as keyof Settings,
+          label: "Clock Format",
+          description: "Choose between 12-hour or 24-hour time format",
           type: "radio",
-          options: ["light", "dark"]
+          options: ["12h", "24h"]
         }
       ]
     }

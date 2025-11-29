@@ -4,27 +4,35 @@ import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Calendar, CheckSquare, Mail, Settings, User, LogOut, Sparkles, Menu, X, ChevronLeft, ChevronRight } from "lucide-react"
-import ThemeToggle from "@/components/theme/theme-toggle"
+import { Calendar, CheckSquare, Mail, User, Sparkles, Menu, X, ChevronLeft, ChevronRight, Flame, Home } from "lucide-react"
+import { useEffect } from "react"
 
 const navItems = [
   { href: "/dashboard", label: "Calendar", icon: Calendar },
   { href: "/dashboard/weekly-todo", label: "Weekly To-Do", icon: CheckSquare },
+  { href: "/dashboard/streak", label: "Streak", icon: Flame },
   { href: "/dashboard/inbox", label: "Inbox", icon: Mail },
   { href: "/dashboard/ai", label: "AI Assistant", icon: Sparkles },
   { href: "/dashboard/profile", label: "Profile", icon: User },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ]
 
 export default function Navigation() {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const [userName, setUserName] = useState("User")
 
-  const handleLogout = () => {
-    localStorage.removeItem("currentUser")
-    window.location.href = "/"
-  }
+  useEffect(() => {
+    const userData = localStorage.getItem("currentUser")
+    if (userData) {
+      try {
+        const parsed = JSON.parse(userData)
+        setUserName(parsed.name || "User")
+      } catch (e) {
+        console.error("Failed to parse user data:", e)
+      }
+    }
+  }, [])
   
   const toggleCollapse = () => {
     const newState = !isCollapsed
@@ -45,26 +53,23 @@ export default function Navigation() {
         animate={{ y: 0, opacity: 1 }}
         className="lg:hidden bg-primary text-primary-foreground p-4 flex items-center justify-between"
       >
-        <div className="flex items-center gap-2">
+        <Link href="/dashboard" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
           <motion.div 
-            whileHover={{ rotate: 360 }}
-            transition={{ duration: 0.5 }}
-            className="w-8 h-8 bg-secondary rounded-md flex items-center justify-center text-sm font-bold"
+            whileHover={{ scale: 1.1 }}
+            transition={{ duration: 0.3 }}
+            className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center cursor-pointer"
           >
-            SC
+            <User size={18} />
           </motion.div>
-          <span className="font-bold">Luman</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <ThemeToggle />
-          <motion.button 
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-            className="text-primary-foreground"
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </motion.button>
-        </div>
+          <span className="font-bold cursor-pointer">{userName}</span>
+        </Link>
+        <motion.button 
+          whileTap={{ scale: 0.9 }}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+          className="text-primary-foreground"
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </motion.button>
       </motion.div>
 
       {/* Desktop Sidebar */}
@@ -75,36 +80,38 @@ export default function Navigation() {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className={`${
           isMobileMenuOpen ? "block" : "hidden"
-        } lg:block fixed top-16 lg:top-0 left-0 bottom-0 bg-primary text-primary-foreground transition-all duration-200 z-40 overflow-y-auto h-screen`}
+        } lg:block fixed top-16 lg:top-0 left-0 bottom-0 bg-primary text-primary-foreground transition-all duration-200 z-40 h-screen flex flex-col overflow-hidden`}
       >
-        {/* Logo */}
+        {/* User Profile Header */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="hidden lg:flex items-center gap-2 p-6 border-b border-primary/20 relative"
         >
           {!isCollapsed ? (
-            <>
+            <Link href="/dashboard" className="flex items-center gap-3 flex-1">
               <motion.div 
-                whileHover={{ rotate: 360, scale: 1.1 }}
-                transition={{ duration: 0.5 }}
-                className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center font-bold text-lg flex-shrink-0"
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3 }}
+                className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center cursor-pointer flex-shrink-0"
               >
-                SC
+                <User size={24} />
               </motion.div>
-              <div>
-                <h1 className="font-bold text-lg">Luman</h1>
-                <p className="text-xs text-primary-foreground/60">Your Productivity Partner</p>
+              <div className="cursor-pointer overflow-hidden">
+                <h1 className="font-bold text-base truncate">{userName}</h1>
+                <p className="text-xs text-primary-foreground/60">Go to Calendar</p>
               </div>
-            </>
+            </Link>
           ) : (
-            <motion.div 
-              whileHover={{ rotate: 360, scale: 1.1 }}
-              transition={{ duration: 0.5 }}
-              className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center font-bold text-lg mx-auto"
-            >
-              SC
-            </motion.div>
+            <Link href="/dashboard" className="mx-auto">
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3 }}
+                className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center cursor-pointer"
+              >
+                <User size={20} />
+              </motion.div>
+            </Link>
           )}
           
           {/* Collapse Toggle Button */}
@@ -118,19 +125,9 @@ export default function Navigation() {
           </motion.button>
         </motion.div>
 
-        {/* Theme Toggle for Desktop */}
-        {!isCollapsed && (
-          <div className="hidden lg:block px-6 py-4 border-b border-primary/20">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Theme</span>
-              <ThemeToggle />
-            </div>
-          </div>
-        )}
-
         {/* Navigation Links */}
-        <nav className="flex-1 overflow-y-auto">
-          <ul className="space-y-1 p-4">
+        <nav className="flex-1 overflow-y-auto p-4">
+          <ul className="space-y-1">
             {navItems.map((item, index) => {
               const Icon = item.icon
               const isActive = pathname === item.href
@@ -175,20 +172,6 @@ export default function Navigation() {
             })}
           </ul>
         </nav>
-
-        {/* Logout Button */}
-        <div className="p-4 border-t border-primary/20">
-          <motion.button
-            onClick={handleLogout}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} px-4 py-3 rounded-lg bg-destructive/20 hover:bg-destructive/30 text-destructive transition-colors font-medium`}
-            title={isCollapsed ? "Logout" : undefined}
-          >
-            <LogOut size={20} />
-            {!isCollapsed && <span>Logout</span>}
-          </motion.button>
-        </div>
       </motion.aside>
 
       {/* Mobile Overlay */}

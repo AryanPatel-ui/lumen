@@ -31,9 +31,22 @@ export default function TimeBlockingModal({
   presetEndTime,
 }: TimeBlockingModalProps) {
   // date as yyyy-mm-dd for the <input type="date">
-  const initialDateISO =
-    initialBlock?.date ?? presetDate ?? new Date().toISOString()
-  const initialDateInput = initialDateISO.slice(0, 10)
+  const getInitialDate = () => {
+    if (initialBlock?.date) {
+      // If date is already in YYYY-MM-DD format, use it directly
+      return initialBlock.date.length === 10 ? initialBlock.date : initialBlock.date.slice(0, 10)
+    }
+    if (presetDate) {
+      return presetDate.length === 10 ? presetDate : presetDate.slice(0, 10)
+    }
+    // Get current date in YYYY-MM-DD format without timezone conversion
+    const now = new Date()
+    const year = now.getFullYear()
+    const month = String(now.getMonth() + 1).padStart(2, '0')
+    const day = String(now.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
+  const initialDateInput = getInitialDate()
 
   const [title, setTitle] = useState(initialBlock?.title ?? "")
   const [dateInput, setDateInput] = useState(initialDateInput)
@@ -48,12 +61,10 @@ export default function TimeBlockingModal({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    // convert back to ISO string for storage
-    const isoDate = new Date(dateInput + "T00:00:00").toISOString()
-
+    // Store date as YYYY-MM-DD string to avoid timezone issues
     const payload: Omit<TimeBlock, "id"> = {
       title,
-      date: isoDate,
+      date: dateInput,
       startTime,
       endTime,
       description,

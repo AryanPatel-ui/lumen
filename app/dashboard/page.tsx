@@ -10,6 +10,7 @@ import MotivationalHeader from "@/components/dynamic/motivational-header"
 import ProductivityStats from "@/components/dynamic/productivity-stats"
 import FloatingTips from "@/components/dynamic/floating-tips"
 import CelebrationConfetti from "@/components/dynamic/celebration-confetti"
+import { formatTime, getClockFormat } from "@/lib/time-utils"
 
 type TimeBlock = {
   id: string
@@ -35,18 +36,27 @@ export default function DashboardPage() {
   const [draftRange, setDraftRange] = useState<DraftRange | null>(null)
   const [showCelebration, setShowCelebration] = useState(false)
   const [statsKey, setStatsKey] = useState(0)
+  const [clockFormat, setClockFormat] = useState<"12h" | "24h">("24h")
 
   // Load time blocks from localStorage
   useEffect(() => {
     const stored = localStorage.getItem("timeBlocks")
     if (stored) {
-      setTimeBlocks(JSON.parse(stored))
+      try {
+        const parsed = JSON.parse(stored)
+        setTimeBlocks(parsed)
+      } catch (e) {
+        console.error("Failed to parse time blocks:", e)
+      }
     }
+    setClockFormat(getClockFormat())
   }, [])
 
-  // Save time blocks to localStorage
+  // Save time blocks to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem("timeBlocks", JSON.stringify(timeBlocks))
+    if (timeBlocks.length > 0) {
+      localStorage.setItem("timeBlocks", JSON.stringify(timeBlocks))
+    }
   }, [timeBlocks])
 
   const handleAddBlock = (block: Omit<TimeBlock, "id">) => {
@@ -55,30 +65,16 @@ export default function DashboardPage() {
     setDraftRange(null)
     setStatsKey(prev => prev + 1)
     
-    // Show success toast
-    toast.success("🎉 Time block added! You're building great habits!", {
-      duration: 3000,
-    })
-    
     // Check if this is their 5th, 10th, or 20th block for celebration
     const newTotal = timeBlocks.length + 1
     if (newTotal === 5 || newTotal === 10 || newTotal === 20) {
       setShowCelebration(true)
-      toast.success(`🏆 Amazing! You've created ${newTotal} time blocks!`, {
-        duration: 4000,
-      })
     }
   }
 
   const handleDeleteBlock = (id: string) => {
-    const blockToDelete = timeBlocks.find(b => b.id === id)
     setTimeBlocks((prev) => prev.filter((block) => block.id !== id))
     setStatsKey(prev => prev + 1)
-    
-    // Show toast
-    toast.success(`✓ "${blockToDelete?.title || 'Block'}" removed from your schedule`, {
-      duration: 2500,
-    })
   }
 
   const handleUpdateBlock = (id: string, updates: Omit<TimeBlock, "id">) => {
@@ -87,11 +83,6 @@ export default function DashboardPage() {
     setEditingBlock(null)
     setDraftRange(null)
     setStatsKey(prev => prev + 1)
-    
-    // Show success toast
-    toast.success("✓ Time block updated successfully!", {
-      duration: 2500,
-    })
   }
 
   const previousMonth = () => {
@@ -104,23 +95,34 @@ export default function DashboardPage() {
 
   const activeDate = selectedDate || new Date()
 
-  const blocksForSelectedDate = timeBlocks.filter((block) =>
-    isSameDay(new Date(block.date), activeDate),
-  )
+  const blocksForSelectedDate = timeBlocks.filter((block) => {
+    // Handle both YYYY-MM-DD and ISO date formats
+    const blockDate = block.date.length === 10 
+      ? new Date(block.date + 'T12:00:00') // Add noon time to avoid timezone issues
+      : new Date(block.date)
+    return isSameDay(blockDate, activeDate)
+  })
 
   const startOfWeek = getStartOfWeek(activeDate)
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(startOfWeek, i))
 
   const blocksByDay: Record<string, TimeBlock[]> = {}
   timeBlocks.forEach((block) => {
-    const key = dayKey(new Date(block.date))
+    // Handle both YYYY-MM-DD and ISO date formats
+    const blockDate = block.date.length === 10 
+      ? new Date(block.date + 'T12:00:00')
+      : new Date(block.date)
+    const key = dayKey(blockDate)
     if (!blocksByDay[key]) blocksByDay[key] = []
     blocksByDay[key].push(block)
   })
 
-  const monthlyBlocks = timeBlocks.filter((block) =>
-    isSameMonth(new Date(block.date), currentDate),
-  )
+  const monthlyBlocks = timeBlocks.filter((block) => {
+    const blockDate = block.date.length === 10 
+      ? new Date(block.date + 'T12:00:00')
+      : new Date(block.date)
+    return isSameMonth(blockDate, currentDate)
+  })
 
   const handleOpenModal = () => {
     setEditingBlock(null)
@@ -131,14 +133,14 @@ export default function DashboardPage() {
   // called when drag on timeline finishes
   const handleTimelineRangeSelect = (startHour: number, endHour: number) => {
     const pad = (n: number) => n.toString().padStart(2, "0")
-    const dateOnly = new Date(
-      activeDate.getFullYear(),
-      activeDate.getMonth(),
-      activeDate.getDate(),
-    )
+    // Format as YYYY-MM-DD to avoid timezone issues
+    const year = activeDate.getFullYear()
+    const month = String(activeDate.getMonth() + 1).padStart(2, '0')
+    const day = String(activeDate.getDate()).padStart(2, '0')
+    const dateString = `${year}-${month}-${day}`
 
     setDraftRange({
-      date: dateOnly.toISOString(),
+      date: dateString,
       startTime: `${pad(startHour)}:00`,
       endTime: `${pad(endHour)}:00`,
     })
@@ -288,7 +290,7 @@ export default function DashboardPage() {
                         <div>
                           <p className="font-medium text-foreground">{block.title}</p>
                           <p className="text-xs text-muted-foreground">
-                            {block.startTime} – {block.endTime}
+                            {formatTime(block.startTime, clockFormat)} – {formatTime(block.endTime, clockFormat)}
                           </p>
                         </div>
                         <button
@@ -344,7 +346,7 @@ export default function DashboardPage() {
                             .slice(0, 3)
                             .map((block) => (
                               <li key={block.id} className="text-[10px] text-foreground/80 truncate">
-                                {block.startTime} – {block.endTime} · {block.title}
+                                {formatTime(block.startTime, clockFormat)} – {formatTime(block.endTime, clockFormat)} · {block.title}
                               </li>
                             ))}
                           {blocks.length > 3 && (
@@ -515,8 +517,14 @@ function DayTimeline({
   const finishDrag = () => {
     if (isDragging && dragStart !== null && dragEnd !== null) {
       const start = Math.min(dragStart, dragEnd)
-      const end = Math.max(dragStart, dragEnd) + 1
-      if (end > start) onRangeSelect(start, end)
+      const end = Math.max(dragStart, dragEnd)
+      // If dragging a single hour, make it a 1-hour block
+      if (end === start) {
+        onRangeSelect(start, end + 1)
+      } else {
+        // For multi-hour drag, end hour is inclusive
+        onRangeSelect(start, end)
+      }
     }
     setIsDragging(false)
     setDragStart(null)
