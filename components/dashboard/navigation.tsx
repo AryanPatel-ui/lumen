@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Calendar, CheckSquare, Mail, Settings, User, LogOut, Sparkles, Menu, X, ChevronLeft, ChevronRight, Flame } from "lucide-react"
+import { Calendar, CheckSquare, Mail, User, Sparkles, Menu, X, ChevronLeft, ChevronRight, Flame } from "lucide-react"
 import ThemeToggle from "@/components/theme/theme-toggle"
 
 const navItems = [
