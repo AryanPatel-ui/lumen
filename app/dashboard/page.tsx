@@ -126,9 +126,12 @@ export default function DashboardPage() {
     blocksByDay[key].push(block)
   })
 
-  const monthlyBlocks = timeBlocks.filter((block) =>
-    isSameMonth(new Date(block.date), currentDate),
-  )
+  const monthlyBlocks = timeBlocks.filter((block) => {
+    const blockDate = block.date.length === 10 
+      ? new Date(block.date + 'T12:00:00')
+      : new Date(block.date)
+    return isSameMonth(blockDate, currentDate)
+  })
 
   const handleOpenModal = () => {
     setEditingBlock(null)
