@@ -79,27 +79,29 @@ export default function Navigation() {
           className="hidden lg:flex items-center gap-2 p-6 border-b border-primary/20 relative"
         >
           {!isCollapsed ? (
-            <>
+            <Link href="/dashboard" className="flex items-center gap-2">
               <motion.div 
                 whileHover={{ rotate: 360, scale: 1.1 }}
                 transition={{ duration: 0.5 }}
-                className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center font-bold text-lg flex-shrink-0"
+                className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center font-bold text-lg flex-shrink-0 cursor-pointer"
               >
                 SC
               </motion.div>
-              <div>
+              <div className="cursor-pointer">
                 <h1 className="font-bold text-lg">Luman</h1>
                 <p className="text-xs text-primary-foreground/60">Your Productivity Partner</p>
               </div>
-            </>
+            </Link>
           ) : (
-            <motion.div 
-              whileHover={{ rotate: 360, scale: 1.1 }}
-              transition={{ duration: 0.5 }}
-              className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center font-bold text-lg mx-auto"
-            >
-              SC
-            </motion.div>
+            <Link href="/dashboard">
+              <motion.div 
+                whileHover={{ rotate: 360, scale: 1.1 }}
+                transition={{ duration: 0.5 }}
+                className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center font-bold text-lg mx-auto cursor-pointer"
+              >
+                SC
+              </motion.div>
+            </Link>
           )}
           
           {/* Collapse Toggle Button */}
