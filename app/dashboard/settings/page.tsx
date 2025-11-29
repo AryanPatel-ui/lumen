@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Save, Settings as SettingsIcon, Bell, Clock, Palette, Shield } from "lucide-react"
+import { Save, Settings as SettingsIcon, Bell, Clock, Shield } from "lucide-react"
 import { motion } from "framer-motion"
 import toast from "react-hot-toast"
 
