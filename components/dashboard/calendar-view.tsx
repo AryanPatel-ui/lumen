@@ -105,7 +105,10 @@ function isSameDay(a: Date, b: Date) {
 }
 
 function getDayLoad(date: Date, timeBlocks: TimeBlock[]) {
-  const key = date.toISOString().slice(0, 10)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const key = `${year}-${month}-${day}`
 
   let totalMinutes = 0
 
@@ -119,8 +122,12 @@ function getDayLoad(date: Date, timeBlocks: TimeBlock[]) {
   }
 
   timeBlocks.forEach((block) => {
-    const dKey = new Date(block.date).toISOString().slice(0, 10)
-    if (dKey !== key) return
+    // Handle both YYYY-MM-DD and ISO date formats
+    const blockDate = block.date.length === 10 
+      ? block.date 
+      : block.date.slice(0, 10)
+    
+    if (blockDate !== key) return
 
     let start = parseToMinutes(block.startTime)
     let end = parseToMinutes(block.endTime)
