@@ -495,7 +495,7 @@ export default function StreakPage() {
                       transition={{ delay: index * 0.05 }}
                       className={`p-4 rounded-lg border-2 transition-all ${
                         isCompleted
-                          ? "bg-green-50 border-green-500 dark:bg-green-950/30"
+                          ? "bg-green-50 dark:bg-green-950/30 border-green-500 dark:border-green-600"
                           : "bg-background border-border hover:border-primary/50"
                       }`}
                       data-testid={`activity-item-${activity.id}`}
