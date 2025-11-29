@@ -65,18 +65,10 @@ export default function DashboardPage() {
     setDraftRange(null)
     setStatsKey(prev => prev + 1)
     
-    // Show success toast
-    toast.success("🎉 Time block added! You're building great habits!", {
-      duration: 3000,
-    })
-    
     // Check if this is their 5th, 10th, or 20th block for celebration
     const newTotal = timeBlocks.length + 1
     if (newTotal === 5 || newTotal === 10 || newTotal === 20) {
       setShowCelebration(true)
-      toast.success(`🏆 Amazing! You've created ${newTotal} time blocks!`, {
-        duration: 4000,
-      })
     }
   }
 
