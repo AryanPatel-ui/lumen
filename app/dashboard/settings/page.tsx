@@ -104,6 +104,13 @@ export default function SettingsPage() {
           max: 60,
           step: 5,
           conditional: "autoBreaks"
+        },
+        {
+          key: "clockFormat" as keyof Settings,
+          label: "Clock Format",
+          description: "Choose between 12-hour or 24-hour time format",
+          type: "radio",
+          options: ["12h", "24h"]
         }
       ]
     }
