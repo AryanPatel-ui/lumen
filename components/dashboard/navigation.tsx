@@ -4,12 +4,13 @@ import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Calendar, CheckSquare, Mail, Settings, User, LogOut, Sparkles, Menu, X, ChevronLeft, ChevronRight } from "lucide-react"
+import { Calendar, CheckSquare, Mail, Settings, User, LogOut, Sparkles, Menu, X, ChevronLeft, ChevronRight, Flame } from "lucide-react"
 import ThemeToggle from "@/components/theme/theme-toggle"
 
 const navItems = [
   { href: "/dashboard", label: "Calendar", icon: Calendar },
   { href: "/dashboard/weekly-todo", label: "Weekly To-Do", icon: CheckSquare },
+  { href: "/dashboard/streak", label: "Streak", icon: Flame },
   { href: "/dashboard/inbox", label: "Inbox", icon: Mail },
   { href: "/dashboard/ai", label: "AI Assistant", icon: Sparkles },
   { href: "/dashboard/profile", label: "Profile", icon: User },
