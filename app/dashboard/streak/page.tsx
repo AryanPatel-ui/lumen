@@ -33,6 +33,7 @@ export default function StreakPage() {
   const [newActivityName, setNewActivityName] = useState("")
   const [newActivityDuration, setNewActivityDuration] = useState("30")
   const [newActivityUnit, setNewActivityUnit] = useState("minutes")
+  const [historyView, setHistoryView] = useState<HistoryView>("week")
 
   // Load streak data from localStorage
   useEffect(() => {
