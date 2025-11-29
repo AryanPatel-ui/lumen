@@ -291,31 +291,86 @@ export default function StreakPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column - Stats */}
         <div className="space-y-6">
-          {/* Current Streak Card */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-gradient-to-br from-orange-500 to-red-500 dark:from-orange-600 dark:to-red-600 rounded-xl shadow-lg p-6 text-white"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <Flame className="w-8 h-8" />
-              <Trophy className="w-6 h-6 opacity-80" />
-            </div>
-            <div className="text-center">
-              <motion.div
-                key={currentStreak}
-                initial={{ scale: 1.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="text-6xl font-bold mb-2"
-              >
-                {currentStreak}
-              </motion.div>
-              <p className="text-lg font-semibold opacity-90">Day Streak</p>
-              <p className="text-sm opacity-75 mt-2">
-                {currentStreak > 0 ? "Keep it up! 🔥" : "Start your streak today!"}
-              </p>
-            </div>
-          </motion.div>
+          {/* Overall Streak Card */}
+          {streakView === "overall" && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-gradient-to-br from-orange-500 to-red-500 dark:from-orange-600 dark:to-red-600 rounded-xl shadow-lg p-6 text-white"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <Flame className="w-8 h-8" />
+                <Trophy className="w-6 h-6 opacity-80" />
+              </div>
+              <div className="text-center">
+                <motion.div
+                  key={currentStreak}
+                  initial={{ scale: 1.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="text-6xl font-bold mb-2"
+                >
+                  {currentStreak}
+                </motion.div>
+                <p className="text-lg font-semibold opacity-90">Day Streak</p>
+                <p className="text-sm opacity-75 mt-2">
+                  {currentStreak > 0 ? "Keep it up! 🔥" : "Start your streak today!"}
+                </p>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Activity-wise Streaks */}
+          {streakView === "activity" && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-card rounded-xl shadow-lg p-6 border border-border"
+            >
+              <h3 className="font-bold text-foreground mb-4 flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-primary" />
+                Activity Streaks
+              </h3>
+              {streakData.activities.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  No activities yet. Add activities to track streaks!
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {streakData.activities.map((activity) => {
+                    const activityStreak = calculateActivityStreak(activity.id)
+                    return (
+                      <div
+                        key={activity.id}
+                        className="p-3 rounded-lg bg-muted/40 border border-border"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-foreground text-sm">
+                              {activity.name}
+                            </h4>
+                            <p className="text-xs text-muted-foreground">
+                              {activity.duration} {activity.durationUnit}
+                            </p>
+                          </div>
+                          <div className="text-center">
+                            <div className="flex items-center gap-1">
+                              <Flame className={`w-4 h-4 ${activityStreak > 0 ? 'text-orange-500' : 'text-muted-foreground'}`} />
+                              <span className="text-2xl font-bold text-foreground">
+                                {activityStreak}
+                              </span>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              {activityStreak === 1 ? 'day' : 'days'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </motion.div>
+          )}
 
           {/* Today's Progress */}
           <motion.div
