@@ -104,21 +104,6 @@ export default function SettingsPage() {
           conditional: "autoBreaks"
         }
       ]
-    },
-    {
-      title: "Appearance",
-      icon: Palette,
-      color: "text-pink-600",
-      bg: "bg-pink-50",
-      settings: [
-        {
-          key: "theme" as keyof Settings,
-          label: "Theme",
-          description: "Choose your preferred color theme",
-          type: "radio",
-          options: ["light", "dark"]
-        }
-      ]
     }
   ]
 
