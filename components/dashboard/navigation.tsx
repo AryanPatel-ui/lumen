@@ -4,7 +4,8 @@ import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Calendar, CheckSquare, Mail, User, Sparkles, Menu, X, ChevronLeft, ChevronRight, Flame } from "lucide-react"
+import { Calendar, CheckSquare, Mail, User, Sparkles, Menu, X, ChevronLeft, ChevronRight, Flame, Home } from "lucide-react"
+import { useEffect } from "react"
 
 const navItems = [
   { href: "/dashboard", label: "Calendar", icon: Calendar },
