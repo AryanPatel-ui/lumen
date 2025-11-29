@@ -171,10 +171,14 @@ export default function StreakPage() {
     ? Math.round((todayLog?.completedActivities.length || 0) / streakData.activities.length * 100)
     : 0
 
-  // Get last 7 days for mini calendar
-  const getLast7Days = () => {
+  // Get historical days based on view
+  const getHistoricalDays = (view: HistoryView) => {
     const days = []
-    for (let i = 6; i >= 0; i--) {
+    let numDays = 7
+    if (view === "month") numDays = 30
+    if (view === "year") numDays = 365
+    
+    for (let i = numDays - 1; i >= 0; i--) {
       const date = new Date()
       date.setDate(date.getDate() - i)
       const year = date.getFullYear()
@@ -189,6 +193,7 @@ export default function StreakPage() {
       days.push({
         date: dateString,
         day: date.getDate(),
+        month: date.getMonth() + 1,
         weekday: date.toLocaleDateString(undefined, { weekday: 'short' }),
         completed: allCompleted
       })
@@ -196,7 +201,7 @@ export default function StreakPage() {
     return days
   }
 
-  const last7Days = getLast7Days()
+  const historicalDays = getHistoricalDays(historyView)
 
   return (
     <div className="p-4 lg:p-8">
