@@ -289,38 +289,99 @@ export default function StreakPage() {
             </p>
           </motion.div>
 
-          {/* Last 7 Days */}
+          {/* History View */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="bg-card rounded-xl shadow-md p-6 border border-border"
           >
-            <div className="flex items-center gap-2 mb-4">
-              <CalendarIcon className="w-5 h-5 text-primary" />
-              <h3 className="font-bold text-foreground">Last 7 Days</h3>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <CalendarIcon className="w-5 h-5 text-primary" />
+                <h3 className="font-bold text-foreground">History</h3>
+              </div>
             </div>
-            <div className="grid grid-cols-7 gap-2">
-              {last7Days.map((day, index) => (
+            
+            {/* View Toggle Buttons */}
+            <div className="flex gap-2 mb-4">
+              <button
+                onClick={() => setHistoryView("week")}
+                className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                  historyView === "week"
+                    ? "bg-primary text-primary-foreground shadow-md"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+                data-testid="history-week-btn"
+              >
+                Week
+              </button>
+              <button
+                onClick={() => setHistoryView("month")}
+                className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                  historyView === "month"
+                    ? "bg-primary text-primary-foreground shadow-md"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+                data-testid="history-month-btn"
+              >
+                Month
+              </button>
+              <button
+                onClick={() => setHistoryView("year")}
+                className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                  historyView === "year"
+                    ? "bg-primary text-primary-foreground shadow-md"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+                data-testid="history-year-btn"
+              >
+                Year
+              </button>
+            </div>
+            
+            {/* Calendar Grid */}
+            <div className={`grid gap-2 max-h-96 overflow-y-auto ${
+              historyView === "week" ? "grid-cols-7" :
+              historyView === "month" ? "grid-cols-10" :
+              "grid-cols-12"
+            }`}>
+              {historicalDays.map((day, index) => (
                 <motion.div
                   key={day.date}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3 + index * 0.05 }}
+                  transition={{ delay: Math.min(0.3 + index * 0.01, 0.8) }}
                   className="text-center"
+                  title={day.date}
                 >
-                  <p className="text-xs text-muted-foreground mb-1">{day.weekday.charAt(0)}</p>
+                  {historyView === "week" && (
+                    <p className="text-xs text-muted-foreground mb-1">{day.weekday.charAt(0)}</p>
+                  )}
                   <div
                     className={`w-full aspect-square rounded-lg flex items-center justify-center text-xs font-bold transition-all ${
                       day.completed
-                        ? "bg-green-500 text-white shadow-md"
-                        : "bg-muted text-muted-foreground"
+                        ? "bg-green-500 dark:bg-green-600 text-white shadow-md"
+                        : "bg-muted dark:bg-muted/50 text-muted-foreground hover:bg-muted/80"
                     }`}
                   >
-                    {day.completed ? <Check size={16} /> : day.day}
+                    {day.completed ? <Check size={historyView === "year" ? 12 : 16} /> : historyView === "year" ? "" : day.day}
                   </div>
+                  {historyView === "month" && day.day === 1 && (
+                    <p className="text-xs text-muted-foreground mt-1">{new Date(day.date).toLocaleDateString(undefined, { month: 'short' })}</p>
+                  )}
                 </motion.div>
               ))}
+            </div>
+            
+            <div className="mt-4 pt-4 border-t border-border">
+              <p className="text-xs text-muted-foreground text-center">
+                {historyView === "week" && "Last 7 days"}
+                {historyView === "month" && "Last 30 days"}
+                {historyView === "year" && "Last 365 days"}
+                {" • "}
+                {historicalDays.filter(d => d.completed).length} days completed
+              </p>
             </div>
           </motion.div>
         </div>
