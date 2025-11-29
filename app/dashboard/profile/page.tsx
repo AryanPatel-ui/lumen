@@ -608,28 +608,40 @@ export default function ProfilePage() {
           )}
         </AnimatePresence>
 
-        {/* Danger Zone */}
+        {/* Quick Actions */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-destructive/5 rounded-xl shadow-lg p-8 border-2 border-destructive/20"
+          className="bg-card rounded-xl shadow-lg p-8 border border-border"
         >
-          <h3 className="text-xl font-bold text-destructive mb-4 flex items-center gap-2">
-            ⚠️ Danger Zone
-          </h3>
-          <p className="text-destructive/80 mb-6 leading-relaxed">
-            Logging out will end your current session. You can log back in anytime.
-          </p>
-          <motion.button
-            onClick={handleLogout}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2 bg-destructive hover:bg-destructive/90 text-destructive-foreground px-6 py-3 rounded-lg font-medium transition-colors shadow-md"
-          >
-            <LogOut size={20} />
-            Logout from Account
-          </motion.button>
+          <h3 className="text-xl font-bold mb-6">Quick Actions</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <motion.button
+              onClick={() => router.push("/dashboard/settings")}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex items-center gap-3 bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-4 rounded-xl font-medium transition-colors shadow-md"
+              data-testid="settings-button"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              App Settings
+            </motion.button>
+            
+            <motion.button
+              onClick={handleLogout}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex items-center gap-3 bg-destructive hover:bg-destructive/90 text-destructive-foreground px-6 py-4 rounded-xl font-medium transition-colors shadow-md"
+              data-testid="logout-button"
+            >
+              <LogOut size={20} />
+              Logout
+            </motion.button>
+          </div>
         </motion.div>
       </div>
     </div>
