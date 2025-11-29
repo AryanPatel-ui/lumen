@@ -526,8 +526,14 @@ function DayTimeline({
   const finishDrag = () => {
     if (isDragging && dragStart !== null && dragEnd !== null) {
       const start = Math.min(dragStart, dragEnd)
-      const end = Math.max(dragStart, dragEnd) + 1
-      if (end > start) onRangeSelect(start, end)
+      const end = Math.max(dragStart, dragEnd)
+      // If dragging a single hour, make it a 1-hour block
+      if (end === start) {
+        onRangeSelect(start, end + 1)
+      } else {
+        // For multi-hour drag, end hour is inclusive
+        onRangeSelect(start, end)
+      }
     }
     setIsDragging(false)
     setDragStart(null)
