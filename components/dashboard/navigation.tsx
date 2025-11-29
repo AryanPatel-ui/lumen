@@ -172,20 +172,6 @@ export default function Navigation() {
             })}
           </ul>
         </nav>
-
-        {/* Logout Button */}
-        <div className="p-4 border-t border-primary/20">
-          <motion.button
-            onClick={handleLogout}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} px-4 py-3 rounded-lg bg-destructive/20 hover:bg-destructive/30 text-destructive transition-colors font-medium`}
-            title={isCollapsed ? "Logout" : undefined}
-          >
-            <LogOut size={20} />
-            {!isCollapsed && <span>Logout</span>}
-          </motion.button>
-        </div>
       </motion.aside>
 
       {/* Mobile Overlay */}
