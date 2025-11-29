@@ -126,8 +126,8 @@ export default function Navigation() {
         </motion.div>
 
         {/* Navigation Links */}
-        <nav className="flex-1 overflow-y-auto">
-          <ul className="space-y-1 p-4">
+        <nav className="flex-1 overflow-y-auto p-4">
+          <ul className="space-y-1">
             {navItems.map((item, index) => {
               const Icon = item.icon
               const isActive = pathname === item.href
@@ -173,8 +173,8 @@ export default function Navigation() {
           </ul>
         </nav>
 
-        {/* Logo at Bottom */}
-        <div className="p-4 border-t border-primary/20">
+        {/* Logo at Bottom - Pushed to absolute bottom */}
+        <div className="mt-auto p-4 border-t border-primary/20">
           <Link href="/dashboard">
             {!isCollapsed ? (
               <motion.div 
